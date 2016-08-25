@@ -1,0 +1,131 @@
+<?php
+
+if(isset($_POST['pproceed']))  // For pickup As a guest
+{
+	$_SESSION['cart_page']='pguest';
+	$_SESSION['sdelivary']='deliver';
+	$_SESSION['Name']='Guest';
+	header('location:menu.php');
+	
+}
+
+
+if(isset($_POST['dproceed']))  // For deliver As a guest
+{
+	$_SESSION['cart_page']='dguest';
+	$_SESSION['Name']='Guest';
+	header('location:menu.php');
+	
+}
+
+
+
+
+
+if($_POST["plogin"])    //For pickup As a Registered user
+	{
+			$_SESSION['cart_page']='pick_member';
+			$pemail=$_POST['pemail'];
+			$ppassword=$_POST['ppassword'];
+
+			
+			 $result='SELECT * FROM user WHERE email="'.$pemail.'" LIMIT 1';
+			 $dasquery=mysql_query($result) or die (mysql_error());
+	        $totalRows = mysql_fetch_array($dasquery);
+
+	        	if($totalRows['password'] == $_POST['ppassword'])
+	        	{
+	               if($totalRows['status'] == 0)
+                    {
+                       echo "<script type='text/javascript'>alert('You have not Activated your Account');</script>";
+
+
+                       echo "<script type='text/javascript'>window.open ('index.php','_self',true)</script>";
+                       
+                    }
+	                    else
+	                    {
+	                    	$_SESSION["Id"]=$totalRows["id"] ;
+	                        $_SESSION["Email"]=$_POST["pemail"];
+	                        $_SESSION["Name"]=$totalRows["fname"];
+	                        $_SESSION["lname"]=$totalRows["lname"];
+	                        $_SESSION["mob"]=$totalRows["mob"];
+	                        $_SESSION["city"]=$totalRows["city"];
+	                        $_SESSION["status"]=$totalRows["status"];
+	                        
+
+							
+							
+							$_SESSION['user_login']="yes";
+							
+	                        setcookie('Username', $username, time() + (86400 * 7));
+	                    	//header('location:menu.php');
+							
+	                    	echo "<script type='text/javascript'>window.open ('menu.php','_self',true)</script>";
+	                    	
+	                    }
+
+	        	}
+		        	else
+		        	{
+		        		echo "<script type='text/javascript'>alert('Sorry, you have entered an incorrect Password');</script>";
+	                       echo "<script type='text/javascript'>window.open ('index.php','_self',true)</script>";
+	                       
+		        	}
+		        	
+	        	
+	}
+
+
+if($_POST["dlogin"])            //For pickup As a Registered use
+	{
+			$_SESSION['cart_page']='deliver_member';
+			$demail=$_POST['demail'];
+			$dpassword=$_POST['dpassword'];
+
+			
+			 $dresult='SELECT * FROM user WHERE email="'.$demail.'" LIMIT 1';
+			 $ddasquery=mysql_query($dresult) or die (mysql_error());
+	         $dtotalRows = mysql_fetch_array($ddasquery);
+
+	        	if($dtotalRows['password'] == $_POST['dpassword'])
+	        	{
+	               if($dtotalRows['status'] == 0)
+                    {
+                       echo "<script type='text/javascript'>alert('You have not Activated your Account');</script>";
+
+
+                       echo "<script type='text/javascript'>window.open ('index.php','_self',true)</script>";
+                       
+                    }
+	                    else
+	                    {
+	                    	$_SESSION["Id"]=$dtotalRows["id"] ;
+	                        $_SESSION["Email"]=$_POST["demail"];
+	                        $_SESSION["Name"]=$dtotalRows["fname"];
+
+
+	                        $_SESSION['user_login']="yes";
+							
+	                        setcookie('Username', $username, time() + (86400 * 7));
+
+	                    	echo "<script type='text/javascript'>window.open ('menu.php','_self',true)</script>";
+	                    }
+
+	        	}
+		        	else
+		        	{
+		        		echo "<script type='text/javascript'>alert('Sorry, you have entered an incorrect Password');</script>";
+	                       echo "<script type='text/javascript'>window.open ('index.php','_self',true)</script>";
+	                       
+		        	}
+		        	
+	        	
+	}
+
+
+
+
+
+
+?>
